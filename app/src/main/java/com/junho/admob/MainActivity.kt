@@ -12,9 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 
 // Remove the line below after defining your own ad unit ID.
 private const val TOAST_TEXT = "Test ads are being shown. " +
@@ -28,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private var interstitialAd: InterstitialAd? = null
     private lateinit var nextLevelButton: Button
     private lateinit var levelTextView: TextView
+    private val list = ArrayList<DutchItem>()
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +44,30 @@ class MainActivity : AppCompatActivity() {
         nextLevelButton.isEnabled = false
         nextLevelButton.setOnClickListener { showInterstitial() }
 
-        levelTextView = findViewById(R.id.level)
+        list.add(DutchItem("김치찌개집", 50000))
+        list.add(DutchItem("김치찌개집", 50000))
+        list.add(DutchItem("김치찌개집", 50000))
+        list.add(DutchItem("김치찌개집", 50000))
+        list.add(DutchItem("김치찌개집", 50000))
+        list.add(DutchItem("김치찌개집", 50000))
+        val adapter = MainRecyclerAdapter(list)
+        findViewById<RecyclerView>(R.id.main_recycelerView).adapter = adapter
+
+        val mainList = findViewById<LinearLayout>(R.id.main_list_item)
+        val plusItem = findViewById<Button>(R.id.plus_item)
+        val plus = findViewById<TextView>(R.id.main_plus_but)
+        plusItem.setOnClickListener {
+            mainList.visibility = View.VISIBLE
+            plusItem.visibility = View.GONE
+            plus.visibility = View.VISIBLE
+        }
+
+        plus.setOnClickListener {
+            mainList.visibility = View.GONE
+            plusItem.visibility = View.VISIBLE
+            plus.visibility = View.GONE
+        }
+
         // Create the text view to show the level number.
         currentLevel = START_LEVEL
 
@@ -109,5 +135,9 @@ class MainActivity : AppCompatActivity() {
         levelTextView.text = "Level " + (++currentLevel)
         interstitialAd = newInterstitialAd()
         loadInterstitial()
+    }
+
+    override fun onBackPressed() {
+
     }
 }
