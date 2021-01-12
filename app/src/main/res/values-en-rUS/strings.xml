@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dutch Pay Calculator</string>
+    <string name="action_settings">Settings</string>
+
+
+    <string name="interstitial_ad_sample">Interstitial Ad Sample</string>
+    <string name="start_level">Level 1</string>
+    <string name="next_level">Calculating</string>
+    <!-- -
+        This is an ad unit ID for an interstitial test ad. Replace with your own interstitial ad unit id.
+        For more information, see https://support.google.com/admob/answer/3052638
+    <!- -->
+    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="dutch_count">Number of Dutch Pay people</string>
+    <string name="how_many_people">How many people will you share?</string>
+    <string name="next">Next</string>
+    <string name="dutch_add">Dutch Pay details added</string>
+    <string name="enter_place">Enter Place</string>
+    <string name="enter_price">Enter Price</string>
+    <string name="after_calculate">After the calculation, a sentence like this came out!</string>
+    <string name="share_friend">Share to a friend!</string>
+    <string name="after_cal">After calculating Dutch Pay</string>
+    <string name="share">Sharing</string>
+    <string name="won">Dollar</string>
+    <string name="total">Total</string>
+    <string name="at">at</string>
+</resources>

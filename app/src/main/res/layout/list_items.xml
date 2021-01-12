@@ -29,6 +29,8 @@
 
             <EditText
                 android:id="@+id/list_edit"
+                android:fontFamily="@font/nanum_round"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <ImageView

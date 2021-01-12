@@ -6,34 +6,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-    <LinearLayout
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:id="@+id/main_top"
+    <TextView
+        android:id="@+id/title_main"
         app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal"
+        android:padding="20dp"
+        android:textSize="16sp"
+        android:fontFamily="@font/nanum_round"
+        android:text="@string/dutch_add"
+        android:textColor="@color/black"
+        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:gravity="center"
-            android:text="더치페이 제목"
-            android:layout_weight="3"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"/>
-        <EditText
-            android:id="@+id/share_title"
-            android:inputType="text"
-            android:gravity="center"
-            android:layout_weight="7"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+        android:layout_height="wrap_content"/>
     <View
         android:layout_marginTop="10dp"
         android:id="@+id/view_main"
         android:background="@color/browser_actions_bg_grey"
-        app:layout_constraintTop_toBottomOf="@+id/main_top"
+        app:layout_constraintTop_toBottomOf="@+id/title_main"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         />
@@ -61,27 +49,36 @@
                 android:layout_width="match_parent"
                 android:padding="20dp"
                 android:layout_height="110dp">
-                <Button
-                    android:text="+"
+                <EditText
+                    android:hint="@string/enter_place"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/nanum_round"
                     android:id="@+id/main_place_button"
-                    android:textSize="25sp"
+                    android:textSize="13sp"
                     android:layout_width="80dp"
                     android:layout_height="50dp"/>
                 <TextView
                     android:layout_marginStart="10dp"
-                    android:text="에서"
+                    android:text=" : "
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/nanum_round"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
-                <Button
+                <EditText
                     android:id="@+id/main_price_button"
                     android:layout_marginStart="10dp"
-                    android:text="+"
-                    android:textSize="25sp"
+                    android:hint="@string/enter_price"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/nanum_round"
+                    android:inputType="numberSigned"
+                    android:textSize="13sp"
                     android:layout_width="80dp"
                     android:layout_height="50dp"/>
                 <TextView
                     android:layout_marginStart="10dp"
-                    android:text="원"
+                    android:text="@string/won"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/nanum_round"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -130,6 +127,7 @@
         android:textColor="@color/white"
         android:gravity="center"
         android:text="@string/next_level"
+        android:fontFamily="@font/nanum_bold"
         android:layout_width="match_parent"
         android:layout_height="60dp"/>
 

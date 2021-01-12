@@ -1,22 +1,22 @@
 package com.junho.admob
 
+import android.content.Intent
 import android.os.Build
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
-import android.widget.Button
-import android.widget.TextView
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import java.util.*
+import kotlin.collections.ArrayList
 
 // Remove the line below after defining your own ad unit ID.
 private const val TOAST_TEXT = "Test ads are being shown. " +
@@ -29,43 +29,52 @@ class MainActivity : AppCompatActivity() {
     private var currentLevel: Int = 0
     private var interstitialAd: InterstitialAd? = null
     private lateinit var nextLevelButton: Button
-    private lateinit var levelTextView: TextView
+
     private val list = ArrayList<DutchItem>()
+    private var peopleCount = 0
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.window.statusBarColor = ContextCompat.getColor(this, R.color.white)
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         setContentView(R.layout.activity_main)
+        peopleCount = intent.getIntExtra("person", 1)
 
         // Create the next level button, which tries to show an interstitial when clicked.
         nextLevelButton = findViewById(R.id.next_level_button)
         nextLevelButton.isEnabled = false
-        nextLevelButton.setOnClickListener { showInterstitial() }
-
-        list.add(DutchItem("김치찌개집", 50000))
-        list.add(DutchItem("김치찌개집", 50000))
-        list.add(DutchItem("김치찌개집", 50000))
-        list.add(DutchItem("김치찌개집", 50000))
-        list.add(DutchItem("김치찌개집", 50000))
-        list.add(DutchItem("김치찌개집", 50000))
+        nextLevelButton.setOnClickListener {
+            if (list.isNotEmpty()) {
+                showInterstitial()
+            } else {
+                Toast.makeText(this, "계산이 불가 합니다!", Toast.LENGTH_LONG).show()
+            }
+        }
         val adapter = MainRecyclerAdapter(list)
         findViewById<RecyclerView>(R.id.main_recycelerView).adapter = adapter
 
         val mainList = findViewById<LinearLayout>(R.id.main_list_item)
         val plusItem = findViewById<Button>(R.id.plus_item)
         val plus = findViewById<TextView>(R.id.main_plus_but)
+        val placeEdit = findViewById<EditText>(R.id.main_place_button)
+        val priceEdit = findViewById<EditText>(R.id.main_price_button)
         plusItem.setOnClickListener {
             mainList.visibility = View.VISIBLE
             plusItem.visibility = View.GONE
             plus.visibility = View.VISIBLE
+            placeEdit.setText("")
+            priceEdit.setText("")
         }
 
         plus.setOnClickListener {
             mainList.visibility = View.GONE
             plusItem.visibility = View.VISIBLE
             plus.visibility = View.GONE
+            if (placeEdit.text.toString() == "" || priceEdit.text.toString() == "") {
+                Toast.makeText(this, "빈칸은 계산할 수 없습니다!", Toast.LENGTH_LONG).show()
+            } else {
+                list.add(DutchItem(placeEdit.text.toString() , priceEdit.text.toString().toInt()))
+                findViewById<RecyclerView>(R.id.main_recycelerView).adapter!!.notifyDataSetChanged()
+            }
         }
 
         // Create the text view to show the level number.
@@ -74,9 +83,6 @@ class MainActivity : AppCompatActivity() {
         // Create the InterstitialAd and set the adUnitId (defined in values/strings.xml).
         interstitialAd = newInterstitialAd()
         loadInterstitial()
-
-        // Toasts the test ad message on the screen. Remove this after defining your own ad unit ID.
-        Toast.makeText(this, TOAST_TEXT, Toast.LENGTH_LONG).show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -106,6 +112,34 @@ class MainActivity : AppCompatActivity() {
                 override fun onAdClosed() {
                     // Proceed to the next level.
                     goToNextLevel()
+                    var resultString = ""
+                    var resultPrice = 0
+                    val current = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        resources.configuration.locales[0]
+                    } else {
+                        resources.configuration.locale
+                    }
+                    for (lit in list) {
+                        if (current != Locale.KOREA) {
+                            resultString += " $"
+                            resultString += lit.price.toString() + "\n"
+                            resultString += " ${getString(R.string.at)} "
+                            resultString += lit.place
+                            resultPrice += lit.price.toInt()
+                        } else {
+                            resultString += lit.place
+                            resultString += " ${getString(R.string.at)} "
+                            resultString += lit.price
+                            resultString += " 결제\n"
+                            resultPrice += lit.price.toInt()
+                        }
+                    }
+
+                    val intentNext = Intent(this@MainActivity, ResultActivity::class.java)
+                    intentNext.putExtra("resultString", resultString)
+                    intentNext.putExtra("resultprice", resultPrice / peopleCount)
+                    intentNext.putExtra("totalprice", resultPrice)
+                    startActivity(intentNext)
                 }
             }
         }
@@ -118,6 +152,10 @@ class MainActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Ad did not load", Toast.LENGTH_SHORT).show()
             goToNextLevel()
+            val intentNext = Intent(this@MainActivity, ResultActivity::class.java)
+            intentNext.putExtra("list", list)
+            intentNext.putExtra("count", peopleCount)
+            startActivity(intentNext)
         }
     }
 
@@ -132,12 +170,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun goToNextLevel() {
         // Show the next level and reload the ad to prepare for the level after.
-        levelTextView.text = "Level " + (++currentLevel)
         interstitialAd = newInterstitialAd()
         loadInterstitial()
-    }
-
-    override fun onBackPressed() {
-
     }
 }
