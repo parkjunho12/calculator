@@ -11,8 +11,8 @@ android {
         applicationId "com.junho.admob"
         minSdkVersion 18
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode 21012501
+        versionName "21.01.25.01"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

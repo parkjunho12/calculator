@@ -99,7 +99,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun newInterstitialAd(): InterstitialAd {
         return InterstitialAd(this).apply {
-            adUnitId = getString(R.string.interstitial_ad_unit_id)
+            if (BuildConfig.DEBUG) {
+                adUnitId = getString(R.string.interstitial_ad_unit_id_test)
+            } else {
+                adUnitId = getString(R.string.interstitial_ad_unit_id)
+            }
             adListener = object : AdListener() {
                 override fun onAdLoaded() {
                     nextLevelButton.isEnabled = true
@@ -152,10 +156,6 @@ class MainActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Ad did not load", Toast.LENGTH_SHORT).show()
             goToNextLevel()
-            val intentNext = Intent(this@MainActivity, ResultActivity::class.java)
-            intentNext.putExtra("list", list)
-            intentNext.putExtra("count", peopleCount)
-            startActivity(intentNext)
         }
     }
 

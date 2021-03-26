@@ -10,7 +10,9 @@
         This is an ad unit ID for an interstitial test ad. Replace with your own interstitial ad unit id.
         For more information, see https://support.google.com/admob/answer/3052638
     <!- -->
-    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="interstitial_ad_unit_id_test">ca-app-pub-3940256099942544/1033173712</string>
+
+    <string name="interstitial_ad_unit_id">ca-app-pub-7696719602071323/4240216467</string>
     <string name="dutch_count">더치페이 인원 수</string>
     <string name="how_many_people">몇 명이서 나눌건가요?</string>
     <string name="next">다음</string>
